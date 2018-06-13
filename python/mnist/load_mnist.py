@@ -3,6 +3,7 @@
 import os
 import struct
 import numpy as np
+import matplotlib.pyplot as plt
 
 def load_mnist(path,kind='train'):
     labels_path=os.path.join(path,
@@ -17,10 +18,15 @@ def load_mnist(path,kind='train'):
         magic,n=struct.unpack('>II',lbpath.read(8))
         labels=np.fromfile(lbpath,dtype=np.uint8)
 
-        with open(images_path,'rb') as imgpath:
-            magic,num,rows,cols=struct.unpack('>IIII',imgpath.read(16))
-            images=np.fromfile(imgpath,dtype=np.uint8).reshape(len(labels),784)
-
+    with open(images_path,'rb') as imgpath:
+        magic,num,rows,cols=struct.unpack('>IIII',imgpath.read(16))
+        images=np.fromfile(imgpath,dtype=np.uint8).reshape(len(labels),784)
     return images,labels
 
-labels,images=load_mnist('./','train')
+if __name__ == '__main__':
+	images,labels=load_mnist('./','train')
+	#plt.figure()
+	img=images[0].reshape(28,28)
+	plt.imshow(img,cmap='Greys',interpolation='nearest')
+	#plt.plot(img)
+	plt.show()
